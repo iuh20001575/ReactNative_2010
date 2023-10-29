@@ -2,9 +2,12 @@ import { View, Text, Image, Pressable } from 'react-native';
 import React from 'react';
 import styles from './styles';
 
-const Product = ({ product, active }) => {
+const Product = ({ product, active, onPress = () => {} }) => {
     return (
-        <View style={[styles.container, active && styles.active]}>
+        <Pressable
+            onPress={onPress}
+            style={[styles.container, active && styles.active]}
+        >
             <Image style={styles.image} source={product.image} />
             <View style={styles.info}>
                 <Text numberOfLines={1}>{product.title}</Text>
@@ -16,7 +19,7 @@ const Product = ({ product, active }) => {
                 <Text style={styles.btnText}>Chat</Text>
             </Pressable>
             <View style={styles.line}></View>
-        </View>
+        </Pressable>
     );
 };
 
