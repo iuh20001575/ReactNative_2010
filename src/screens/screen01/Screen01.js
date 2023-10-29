@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import React, { useState } from 'react';
 import styles from './styles';
 import Product from '../../components/product/Product';
@@ -61,22 +61,28 @@ const Screen01 = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <ScrollView stickyHeaderIndices={[0]}>
-            <Header />
-            <Text style={styles.desc}>
-                Bạn có thắc mắc với sản phẩm vừa xem đừng ngại chát với shop!
-            </Text>
-            <View style={styles.products}>
-                {products.map((item, index) => (
-                    <Product
-                        active={activeIndex === index}
-                        product={item}
-                        key={index}
-                        onPress={() => setActiveIndex(index)}
-                    />
-                ))}
-            </View>
-        </ScrollView>
+        <SafeAreaView style={styles.container}>
+            <ScrollView
+                style={{ backgroundColor: '#e5e5e5', flex: 1 }}
+                stickyHeaderIndices={[0]}
+            >
+                <Header />
+                <Text style={styles.desc}>
+                    Bạn có thắc mắc với sản phẩm vừa xem đừng ngại chát với
+                    shop!
+                </Text>
+                <View style={styles.products}>
+                    {products.map((item, index) => (
+                        <Product
+                            active={activeIndex === index}
+                            product={item}
+                            key={index}
+                            onPress={() => setActiveIndex(index)}
+                        />
+                    ))}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

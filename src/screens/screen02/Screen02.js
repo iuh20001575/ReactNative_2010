@@ -1,15 +1,18 @@
+import React from 'react';
 import {
     FlatList,
     Image,
+    Platform,
+    SafeAreaView,
     ScrollView,
-    StyleSheet,
     Text,
+    TextInput,
     View,
 } from 'react-native';
-import React from 'react';
-import styles from './styles';
-import formatCurrency from '../../utils/formatCurrency';
+import uuid from 'react-native-uuid';
 import Header from '../../components/header/Header';
+import formatCurrency from '../../utils/formatCurrency';
+import styles from './styles';
 
 const data = [
     {
@@ -61,6 +64,22 @@ const data = [
         rating: 0,
     },
     {
+        image: require('../../../assets/dauchuyendoipsps.png'),
+        title: '[Mã ELFLASH3 hoàn 10K xu đơn 20K] CÁP USB LINK - Dây USB 2 đầu đực 2.0/ 3.0 (Màu xanh) - LOẠI TỐT',
+        price: 69900,
+        sale: 39,
+        review: 15,
+        rating: 3,
+    },
+    {
+        image: require('../../../assets/dauchuyendoi.png'),
+        title: 'Dây Cáp USB Micro, Mini, Type C, Truyền Dữ Liệu Cho Thiết Bị Arduno R3, Mega2560, Nano, Máy In, Sạc Điện Thoại',
+        price: 69900,
+        sale: 39,
+        review: 15,
+        rating: 4,
+    },
+    {
         image: require('../../../assets/carbusbtops.png'),
         title: 'Dây nối dài USB 2.0 UGREEN US103|Thiết kế gọn nhẹ|Tương thích hoàn toàn với các máy PC và Mac |Bảo Hành 18 Tháng 1 Đổi 1',
         price: 69900,
@@ -80,46 +99,74 @@ const data = [
 
 export default function Screen02() {
     return (
-        <ScrollView stickyHeaderIndices={[0]}>
-            <Header />
-            <FlatList
-                columnWrapperStyle={{ gap: 30 }}
-                style={styles.list}
-                contentContainerStyle={{ gap: 11 }}
-                data={data}
-                numColumns={2}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Image source={item.image} style={styles.image} />
-                        <View style={styles.info}>
-                            <Text numberOfLines={2} style={styles.title}>
-                                {item.title}
-                            </Text>
-                            <View style={styles.review}>
-                                <View style={styles.rating}>
-                                    {new Array(5).fill(null).map((_, index) => (
-                                        <Image
-                                            style={styles.start}
-                                            source={
-                                                index < item.rating
-                                                    ? require('../../../assets/StartActive.png')
-                                                    : require('../../../assets/StartInactive.png')
-                                            }
-                                        />
-                                    ))}
-                                </View>
-                                <Text>({item.review})</Text>
-                            </View>
-                            <View style={styles.priceGroup}>
-                                <Text style={styles.price}>
-                                    {formatCurrency(item.price)} đ
+        <SafeAreaView style={styles.container}>
+            <ScrollView
+                nestedScrollEnabled
+                style={{ flex: 1 }}
+                stickyHeaderIndices={[0]}
+            >
+                <Header moreActive cartActive>
+                    <View style={styles.search}>
+                        <Image
+                            style={styles.searchIcon}
+                            source={require('../../../assets/searchIcon.png')}
+                        />
+                        <TextInput
+                            style={[
+                                styles.input,
+                                Platform.OS === 'web' && {
+                                    outline: 'none',
+                                },
+                            ]}
+                            value='Dây cáp usb'
+                        />
+                    </View>
+                </Header>
+                <FlatList
+                    scrollEnabled={false}
+                    columnWrapperStyle={{ gap: 30 }}
+                    style={styles.list}
+                    data={data}
+                    numColumns={2}
+                    keyExtractor={() => uuid.v4()}
+                    renderItem={({ item }) => (
+                        <View style={styles.item}>
+                            <Image source={item.image} style={styles.image} />
+                            <View style={styles.info}>
+                                <Text numberOfLines={2} style={styles.title}>
+                                    {item.title}
                                 </Text>
-                                <Text style={styles.sale}>-{item.sale}%</Text>
+                                <View style={styles.review}>
+                                    <View style={styles.rating}>
+                                        {new Array(5)
+                                            .fill(null)
+                                            .map((_, index) => (
+                                                <Image
+                                                    key={uuid.v4()}
+                                                    style={styles.start}
+                                                    source={
+                                                        index < item.rating
+                                                            ? require('../../../assets/StartActive.png')
+                                                            : require('../../../assets/StartInactive.png')
+                                                    }
+                                                />
+                                            ))}
+                                    </View>
+                                    <Text>({item.review})</Text>
+                                </View>
+                                <View style={styles.priceGroup}>
+                                    <Text style={styles.price}>
+                                        {formatCurrency(item.price)} đ
+                                    </Text>
+                                    <Text style={styles.sale}>
+                                        -{item.sale}%
+                                    </Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                )}
-            />
-        </ScrollView>
+                    )}
+                />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
